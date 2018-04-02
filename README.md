@@ -1,10 +1,10 @@
 # Python_learning
-寂听的Python学习记录 | JT's learning record of Python language 
+寂听的 Python 学习记录 | JT's learning record of Python language 
 
 ## 简介 | Introduction
-一个 Python 初学者的小小代码仓库，练习 Python，Git，Markdown 等工具的使用  
-尽量同时使用中英文写清注释。如无特别说明，默认使用 Python 3 (≥3.6.2)  
-main.py 作为测试文件，可能会经常改动。先放个 Hello world 意思一下
+一个 Python 初学者的小小代码仓库，练习 Python，Git，Markdown 等工具的使用。
+尽量同时使用中英文写清注释。如无特别说明，默认使用 Python 3 (≥3.6.2)
+main.py 作为测试文件，可能会经常改动。先放个 Hello world 意思一下。
 
 [Python Official website](https://www.python.org/ )  |
 [Python 3.6.5 documentation(en)](https://docs.python.org/3/index.html)
