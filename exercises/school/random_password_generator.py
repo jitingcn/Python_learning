@@ -5,7 +5,7 @@
 # Created by JT on 4/1/2018 20:47.
 # Blog: https://blog.jtcat.com/
 
-# 1.	Random password generator.
+# 1.Random password generator.
 # The password generator should print a random string of characters of a random length
 # between six and twelve characters long. The password should be created out of a mixture of
 # capital letters, A-Z, lower case letters, a-z, numerals, 0-9 and the symbols !, ?, @, #, &, ;, :.
