@@ -8,15 +8,16 @@
 # reference: https://www.zhaoj.in/read-4821.html
 # Put captured json data into data.json in the directory first!
 __author__ = 'JT <jiting@jtcat.com>'
-__version__ = "0.3 Beta"
+__version__ = "0.8 Beta"
 
 import json
+from datetime import datetime, timedelta, timezone
 
 
 class Main(object):
 
     def __init__(self):
-        self.keys = {"oe": "0", "n": "0", "z": "0", "on": "0",
+        self.dict = {"oe": "0", "n": "0", "z": "0", "on": "0",
                      "oK": "1", "6": "1", "5": "1",
                      "ow": "2", "-": "2", "A": "2", "oc": "2",
                      "oi": "3", "i": "3", "o": "3", "oz": "3",
@@ -37,21 +38,30 @@ class Main(object):
 
         while string:
             if len(string) > 1:
-                if self.keys.__contains__(string[:2]):
-                    current_value = self.keys.get(string[:2])
+                if self.dict.__contains__(string[:2]):
+                    current_value = self.dict.get(string[:2])
                     string = string[2:]
                 else:
-                    current_value = self.keys.get(string[:1])
+                    current_value = self.dict.get(string[:1])
                     string = string[1:]
                 result += str(current_value)
             else:
-                result += str(self.keys.get(string))
+                result += str(self.dict.get(string))
                 string = ""
         return result
 
     def start(self):
         for i in self.data:
-            print(self.decode(i["fromEncodeUin"]))
+            if i["fromGender"] == "0":
+                gender = "Male"
+            else:
+                gender = "Female"
+            description = i["fromNick"]
+            account = self.decode(i["fromEncodeUin"])
+            receiver = i["toNick"]
+            topic = i["topicName"]
+            timestamp = datetime.utcfromtimestamp((i["timestamp"])).astimezone(timezone(timedelta(hours=8)))
+            print(description, "账号:", account, "认为", receiver, topic, "在", timestamp)
 
 
 if __name__ == "__main__":
