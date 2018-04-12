@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Python_learning - decode_QQ_whoSaid.py
+# Python_learning - QQHonestSayDecode.py
 # Created by JT on 4/5/2018 03:55.
 # Blog: https://blog.jtcat.com/
 
 # reference: https://www.zhaoj.in/read-4821.html
 # Put captured json data into data.json in the directory first!
 __author__ = 'JT <jiting@jtcat.com>'
-__version__ = "0.8 Beta"
+__version__ = "0.9 Beta"
 
 import json
 from datetime import datetime, timedelta, timezone
@@ -20,7 +20,7 @@ class Main(object):
         self.dict = {"oe": "0", "n": "0", "z": "0", "on": "0",
                      "oK": "1", "6": "1", "5": "1",
                      "ow": "2", "-": "2", "A": "2", "oc": "2",
-                     "oi": "3", "i": "3", "o": "3", "oz": "3",
+                     "oi": "3", "i": "3", "o": "3", "oz": "3", "w": "3",
                      "7e": "4", "v": "4", "P": "4", "7n": "4",
                      "7K": "5", "4": "5", "k": "5", "7": "5", "7v": "5",
                      "7w": "6", "C": "6", "s": "6", "7c": "6",
@@ -41,8 +41,11 @@ class Main(object):
                 if self.dict.__contains__(string[:2]):
                     current_value = self.dict.get(string[:2])
                     string = string[2:]
-                else:
+                elif self.dict.__contains__(string[:1]):
                     current_value = self.dict.get(string[:1])
+                    string = string[1:]
+                else:
+                    current_value = ""
                     string = string[1:]
                 result += str(current_value)
             else:
