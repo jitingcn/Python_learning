@@ -28,4 +28,5 @@ def pw(digit=0, time=1):
         password = ''.join(tmp)
         print(password)
 
-# pw()
+
+pw()
