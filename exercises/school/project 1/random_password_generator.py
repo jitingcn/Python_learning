@@ -15,8 +15,8 @@ import random
 seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?@#&;:"
 
 
-def pw(digit=0, time=1):
-    for x in range(time):
+def pw(digit=0, times=1):
+    for x in range(times):
         tmp = []
         if digit == 0:
             for i in range(random.randint(6, 12)):
