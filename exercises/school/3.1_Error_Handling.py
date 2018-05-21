@@ -98,8 +98,8 @@ def q6(h=1, i=""):
         tuple1 = (x_input(6, h, i).split())
         if len(tuple1) != 3:
             raise Exception(IndexError("the tuple does not have exactly three elements"))
-        for i in range(3):
-            print(tuple1[int(-i)])
+        for i in range(1,4):
+            print(tuple1[-i])
     except Exception as e:
         print(e)
     return "finish q6"
@@ -225,13 +225,22 @@ def main():
     while True:
         print("\nError Handling Simple Line Interface :)\n By:", __author__)
         print("Do function auto check?(y/n)", end="")
-        if input() == "y":
-            print("Which function do you want to check?(1-6,all)", end="")
-            operate = input()
-            if operate == "all":
-                auto_check(0)
-            elif operate.isdigit():
-                auto_check(int(operate))
+        do = input()
+        try:
+            if do == "y" or do == "yes":
+                print("Which function do you want to check?(1-6,all)", end="")
+                operate = input()
+                if operate == "all":
+                    auto_check(0)
+                elif operate.isdigit():
+                    auto_check(int(operate))
+            elif do == "n":
+                pass
+            else:
+                raise TypeError
+        except TypeError:
+            print("except: You should only enter y or n")
+            print("Skip auto check...")
         print("Now Manual selection function: (4,5,6)", end="")
         operate = input()
         if operate == "4":
@@ -255,7 +264,7 @@ def main():
                 print("Enter something and separate with spaces :)\n", end="")
                 x5 = input()
                 if x5:
-                    print(q4(0, x5))
+                    print(q5(0, x5))
                     count += 1
                 else:
                     print("Wrong input! Please try again!")
@@ -273,8 +282,9 @@ def main():
                     count += 1
                 else:
                     print("Wrong input! Please try again!")
-            print("\nContinue or exit?", end="")
-            if not input():
+            print("\nContinue?(Any key or no) ", end="")
+            do = input()
+            if do == "no":
                 break
 
 
