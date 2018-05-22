@@ -13,17 +13,15 @@ import json
 # According to Python coding style guide (https://www.python.org/dev/peps/pep-0008/#function-and-variable-names)
 # Both function and argument name should be lowercase. Separate function name should use underline, not capital.
 
-# I am confused about the book parameter, I think it is just useless, the only reasonable input value can only be "{}"
-# Means data needs to be stored in a dictionary
 
-
-def get_birthdays(filename):
-    birth = {}
+def get_birthdays(filename, book=None):
+    if book is None:
+        book = {}
     with open(filename, 'r') as f:
         for line in f.readlines():
             tmp = line.strip().split(",")
-            birth[tmp[0]] = {"month": tmp[1], "day": int(tmp[2])}
-    return birth
+            book[tmp[0]] = {"month": tmp[1], "day": int(tmp[2])}
+    return book
 
 # Part 2 – A complete birthday book application
 
