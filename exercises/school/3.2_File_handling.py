@@ -26,32 +26,37 @@ def get_birthdays(filename, book=None):
 # Part 2 – A complete birthday book application
 
 
-def name_birth(birth, name):
+def name_birth(book, name):
     try:
-        if name in birth:
-            print(name + "'s birthday is", birth[name]["day"], birth[name]["month"])
+        if name in book:
+            print(name + "'s birthday is", book[name]["day"], book[name]["month"])
         else:
             raise IndexError
     except IndexError:
         print("Can't find", name)
 
 
-def month_birth(birth, month):  # TODO
+def month_birth(book, month):
+    count = 0
     try:
-        for i in birth:
-            if month == birth[i]["month"]:
-                print()
+        print("\nChecking birthday in", month)
+        for i in book:
+            if month == book[i]["month"]:
+                print(i + ":", book[i]["day"], month)
+                count += 1
+        print(count, "people's birthday in", month)
     except IndexError:
         print()
 
 
-def next_birth():  # TODO
+def next_birth(book, month, day):  # TODO
     pass
 
 
-def test_data(method, birth=None):  # create and delete test data
-    if birth is None:
-        birth = {}
+
+def test_data(method, book=None):  # create and delete test data
+    if book is None:
+        book = {}
     if method == 0:  # create test data
         with open("test.txt", 'w', encoding="utf-8") as f:
             f.write("John,Mar,23\n"
@@ -64,17 +69,18 @@ def test_data(method, birth=None):  # create and delete test data
         os.remove("test.txt")
     elif method == 2:  # save birthday book
         with open("birth.json", 'a', encoding="utf-8") as f:
-            f.write(json.dumps(birth))
+            f.write(json.dumps(book))
     elif method == 3:  # delete birthday book
         os.remove("birth.json")
 
 
 def main():  # TODO
-    print("Birthday book by Jiting")
+    print("Birthday book by Jiting (testing)")
     test_data(0)
     data = get_birthdays("test.txt")
     print(data)
     name_birth(data, "Susan")
+    month_birth(data, "Mar")
     test_data(2, data)
     test_data(3)
     test_data(1)
