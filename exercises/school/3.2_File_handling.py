@@ -84,14 +84,27 @@ def month_birth(book, month):
 
 
 def next_birth(book, month, day):  # TODO
-    count = 0
     try:
+        month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        if month in month_list and month != "Dec":
+            next_month = month_list[month_list.index(month) + 1]
+        elif month == "Dec":
+            next_month = "Jan"
+        else:
+            raise IndexError
+        count = 0
         print("\nThese people's birthdays within a week after", day, month)
         for i in book:
-            if month == book[i]["month"]:
-                print(i + ":", book[i]["day"], month)
-                count += 1
-        print(count, "people's birthday in", month)
+            if day <= 24 and month == book[i]["month"]:
+                if day <= book[i]["day"] <= day + 7:
+                    print(i + ":", book[i]["day"], month)
+                    count += 1
+            elif day >= 24 and next_month == book[i]["month"]:
+                if book[i]["day"] <= 7:
+                    print(i + ":", book[i]["day"], next_month)
+                    count += 1
+        if count == 0:
+            print("Warning: Can't find anyone!")
     except IndexError:
         print()
 
@@ -128,7 +141,7 @@ def main():  # TODO
     # print(data)
     name_birth(data, "Susan")
     month_birth(data, "Mar")
-    # next_birth(data, "Mar", 20)
+    next_birth(data, "Mar", 15)
     test_data(2, data)
     test_data(3)
     test_data(1)
