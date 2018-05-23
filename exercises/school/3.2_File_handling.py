@@ -15,12 +15,12 @@ import json
 
 
 def get_birthdays(filename, book=None):
+    print("\nLoading data...")
     if book is None:
         book = {}
     with open(filename, 'r') as f:
         for line in f.readlines():
             tmp = line.strip().split(",")
-            print(tmp)
             book[tmp[0]] = {"month": tmp[1], "day": int(tmp[2])}
     book = date_check(book)
     return book
@@ -87,7 +87,7 @@ def month_birth(book, month):
         print()
 
 
-def next_birth(book, month, day):  # TODO: There are still boundary definition problems
+def next_birth(book, month, day):  # TODO: boundary definition problems still exist!
     try:
         month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         long_month = ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"]
@@ -106,8 +106,11 @@ def next_birth(book, month, day):  # TODO: There are still boundary definition p
                     if day <= book[i]["day"] <= day + 7:
                         print(i + ":", book[i]["day"], month)
                         count += 1
-                elif day > 24 and next_month == book[i]["month"]:
-                    if book[i]["day"] <= 31 - day:
+                elif day > 24 and (month == book[i]["month"] or next_month == book[i]["month"]):
+                    if day <= book[i]["day"] <= day + 7:
+                        print(i + ":", book[i]["day"], month)
+                        count += 1
+                    elif book[i]["day"] <= 31 - day:
                         print(i + ":", book[i]["day"], next_month)
                         count += 1
             elif month in short_month:
@@ -115,8 +118,11 @@ def next_birth(book, month, day):  # TODO: There are still boundary definition p
                     if day <= book[i]["day"] <= day + 7:
                         print(i + ":", book[i]["day"], month)
                         count += 1
-                elif day > 23 and next_month == book[i]["month"]:
-                    if book[i]["day"] <= 30 - day:
+                elif day > 23 and (month == book[i]["month"] or next_month == book[i]["month"]):
+                    if day <= book[i]["day"] <= day + 7:
+                        print(i + ":", book[i]["day"], month)
+                        count += 1
+                    elif book[i]["day"] <= 30 - day:
                         print(i + ":", book[i]["day"], next_month)
                         count += 1
         if count == 0:
@@ -152,7 +158,7 @@ def test_data(method, book=None):  # create and delete test data
 
 
 def test():
-    print("Birthday book by Jiting (testing)")
+    print("Birthday book by JT (auto test)")
     test_data(0)
     data = get_birthdays("test.txt")
     data = date_check(data)
@@ -173,7 +179,7 @@ def main():
                 book = json.load(f)
         else:
             book = {}
-        print("\n1. Read birthday data from a file.")
+        print("\nMenu:\n1. Read birthday data from a file.")
         print("2. Manually enter birthday data.")
         print("3. Search birthday by name.")
         print("4. Search birthday by month.")
@@ -186,10 +192,11 @@ def main():
                 filename = input("Enter the file name: ")
                 book = get_birthdays(filename, book)
                 test_data(2, book)
+                print("\nData import completed, automatically saved...")
             elif op == 2:
                 name = input("Enter the person name: ")
                 month = input("Enter the month of birthday [e.p. Mar]: ")
-                day = int(input("Enter the day of birthday [e.p. Mar]: "))
+                day = int(input("Enter the day of birthday [e.p. 3]: "))
                 book[name] = {"month": month, "day": day}
                 test_data(2, book)
             elif op == 3:
@@ -199,7 +206,7 @@ def main():
                 month = input("Enter the people's name that you want to query: ")
                 month_birth(book, month)
             elif op == 5:
-                day, month = input("Enter a date that you want to query [example: 10 Feb]: ").split()
+                month, day = input("Enter a date that you want to query [example: Feb 10]: ").split()
                 next_birth(book, month, int(day))
             elif op == 6:
                 break
