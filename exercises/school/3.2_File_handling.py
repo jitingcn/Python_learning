@@ -20,20 +20,22 @@ def get_birthdays(filename, book=None):
     with open(filename, 'r') as f:
         for line in f.readlines():
             tmp = line.strip().split(",")
+            print(tmp)
             book[tmp[0]] = {"month": tmp[1], "day": int(tmp[2])}
+    book = date_check(book)
     return book
 
 # Part 2 – A complete birthday book application
 
 
 def date_check(book):
-    month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     long_month = ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"]
     short_month = ["Feb", "Apr", "Jun", "Sep", "Nov"]
     remove_set = set()
     print("\nSimple check of dates")
     for i in book:
-        if book[i]["month"] not in month:
+        if book[i]["month"] not in month_list:
             print("\nThe month of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
             print(i + ":", book[i]["day"], book[i]["month"])
             print("Prepare remove", i, "from birthday book")
@@ -59,6 +61,8 @@ def date_check(book):
         del book[i]
     return book
 
+# search functions
+
 
 def name_birth(book, name):
     try:
@@ -78,14 +82,16 @@ def month_birth(book, month):
             if month == book[i]["month"]:
                 print(i + ":", book[i]["day"], month)
                 count += 1
-        print(count, "people's birthday in", month)
+        print("Find", count, "person")
     except IndexError:
         print()
 
 
-def next_birth(book, month, day):  # TODO
+def next_birth(book, month, day):  # TODO: There are still boundary definition problems
     try:
         month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        long_month = ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"]
+        short_month = ["Feb", "Apr", "Jun", "Sep", "Nov"]
         if month in month_list and month != "Dec":
             next_month = month_list[month_list.index(month) + 1]
         elif month == "Dec":
@@ -95,18 +101,30 @@ def next_birth(book, month, day):  # TODO
         count = 0
         print("\nThese people's birthdays within a week after", day, month)
         for i in book:
-            if day <= 24 and month == book[i]["month"]:
-                if day <= book[i]["day"] <= day + 7:
-                    print(i + ":", book[i]["day"], month)
-                    count += 1
-            elif day >= 24 and next_month == book[i]["month"]:
-                if book[i]["day"] <= 7:
-                    print(i + ":", book[i]["day"], next_month)
-                    count += 1
+            if month in long_month:
+                if day <= 24 and month == book[i]["month"]:
+                    if day <= book[i]["day"] <= day + 7:
+                        print(i + ":", book[i]["day"], month)
+                        count += 1
+                elif day > 24 and next_month == book[i]["month"]:
+                    if book[i]["day"] <= 31 - day:
+                        print(i + ":", book[i]["day"], next_month)
+                        count += 1
+            elif month in short_month:
+                if day <= 23 and month == book[i]["month"]:
+                    if day <= book[i]["day"] <= day + 7:
+                        print(i + ":", book[i]["day"], month)
+                        count += 1
+                elif day > 23 and next_month == book[i]["month"]:
+                    if book[i]["day"] <= 30 - day:
+                        print(i + ":", book[i]["day"], next_month)
+                        count += 1
         if count == 0:
             print("Warning: Can't find anyone!")
     except IndexError:
         print()
+
+# test function
 
 
 def test_data(method, book=None):  # create and delete test data
@@ -127,24 +145,66 @@ def test_data(method, book=None):  # create and delete test data
     elif method == 1:  # delete test data
         os.remove("test.txt")
     elif method == 2:  # save birthday book
-        with open("birth.json", 'a', encoding="utf-8") as f:
+        with open("birth.json", 'w', encoding="utf-8") as f:
             f.write(json.dumps(book))
     elif method == 3:  # delete birthday book
         os.remove("birth.json")
 
 
-def main():  # TODO
+def test():
     print("Birthday book by Jiting (testing)")
     test_data(0)
     data = get_birthdays("test.txt")
     data = date_check(data)
-    # print(data)
+    print(data)
     name_birth(data, "Susan")
     month_birth(data, "Mar")
-    next_birth(data, "Mar", 15)
+    next_birth(data, "Feb", 10)
     test_data(2, data)
     test_data(3)
     test_data(1)
+
+
+def main():
+    print("Birthday book by JT")
+    while True:
+        if os.path.isfile("birth.json"):
+            with open("birth.json", 'r') as f:
+                book = json.load(f)
+        else:
+            book = {}
+        print("\n1. Read birthday data from a file.")
+        print("2. Manually enter birthday data.")
+        print("3. Search birthday by name.")
+        print("4. Search birthday by month.")
+        print("5. Search people's birthdays within a week.")
+        print("6. Quit.")
+        print("Select the operation: ", end="")
+        try:
+            op = int(input())
+            if op == 1:
+                filename = input("Enter the file name: ")
+                book = get_birthdays(filename, book)
+                test_data(2, book)
+            elif op == 2:
+                name = input("Enter the person name: ")
+                month = input("Enter the month of birthday [e.p. Mar]: ")
+                day = int(input("Enter the day of birthday [e.p. Mar]: "))
+                book[name] = {"month": month, "day": day}
+                test_data(2, book)
+            elif op == 3:
+                name = input("Enter the people's name that you want to query: ")
+                name_birth(book, name)
+            elif op == 4:
+                month = input("Enter the people's name that you want to query: ")
+                month_birth(book, month)
+            elif op == 5:
+                day, month = input("Enter a date that you want to query [example: 10 Feb]: ").split()
+                next_birth(book, month, int(day))
+            elif op == 6:
+                break
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
