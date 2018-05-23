@@ -34,22 +34,27 @@ def date_check(book):
     print("\nSimple check of dates")
     for i in book:
         if book[i]["month"] not in month:
+            print("\nThe month of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
             print(i + ":", book[i]["day"], book[i]["month"])
-            print("The month of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
             print("Prepare remove", i, "from birthday book")
             remove_set.add(i)
-        if book[i]["month"] in long_month:
-            if not 1 < book[i]["day"] < 31:
+        elif book[i]["month"] in long_month:
+            if not 1 <= book[i]["day"] <= 31:
+                print("\nThe day of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
                 print(i + ":", book[i]["day"], book[i]["month"])
-                print("The day of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
                 print("Prepare remove", i, "from birthday book")
                 remove_set.add(i)
-        if book[i]["month"] in short_month:
-            if not 1 < book[i]["day"] < 30:
+        elif book[i]["month"] in short_month:
+            if not 1 <= book[i]["day"] <= 30:
+                print("\nThe day of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
                 print(i + ":", book[i]["day"], book[i]["month"])
-                print("The day of", i + "'s birthday seen not right. Please make sure there are no misspellings.")
                 print("Prepare remove", i, "from birthday book")
                 remove_set.add(i)
+        if book[i]["month"] == "Feb":
+            if not 1 <= book[i]["day"] <= 28:
+                print("\nThe day of", i + "'s birthday seen not right.")
+                print(i + ":", book[i]["day"], book[i]["month"])
+                print("Warning: The possibility of a birthday on February", book[i]["day"], "is extremely low!")
     for i in remove_set:
         del book[i]
     return book
@@ -101,7 +106,10 @@ def test_data(method, book=None):  # create and delete test data
                     "Duncan,May,20\n"
                     "Holland,Jan,3\n"
                     "Stephenson,Feb,14\n"
-                    "Stephen,Jan,32\n"
+                    "Alpha,Xan,34\n"
+                    "Beta,Nov,31\n"
+                    "Canada,Jan,32\n"
+                    "Dubai,Feb,29\n"
                     )
     elif method == 1:  # delete test data
         os.remove("test.txt")
