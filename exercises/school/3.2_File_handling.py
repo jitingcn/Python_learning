@@ -76,8 +76,8 @@ def month_birth(book, month):
                 print(i + ":", book[i]["day"], month)
                 count += 1
         print("Find", count, "person")
-    except IndexError:
-        print()
+    except IndexError as e:
+        print(e)
 
 
 def next_birth(book, month, day):
@@ -107,8 +107,8 @@ def next_birth(book, month, day):
                     count += 1
         if count == 0:
             print("Warning: Can't find anyone!")
-    except IndexError:
-        print()
+    except IndexError as e:
+        print(e)
 
 # test function
 
