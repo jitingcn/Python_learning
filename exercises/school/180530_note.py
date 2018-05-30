@@ -3,6 +3,7 @@
 
 # Python_learning - 180530_note.py
 # Created by JT on 30/05/2018 10:11.
+import math
 import timeit
 
 
@@ -32,6 +33,8 @@ def primes_list(n, m):
                 primes_l.append(i)
             else:
                 break
+    elif m == 4:
+        primes_l = sieve_atkin(n)
     return primes_l
 
 
@@ -98,12 +101,45 @@ def primes():
         it = filter(_not_divisible(n), it)
 
 
+def sieve_atkin(nmax):  # from: https://gist.github.com/mineta/7840849
+    """
+    Returns a list of prime numbers below the number "n"
+    """
+    prime_list = dict([(i, False) for i in range(5, nmax+1)])
+    for x in range(1, int(math.sqrt(nmax))+1):
+        for y in range(1, int(math.sqrt(nmax))+1):
+            n = 4*x**2 + y**2
+            if (n <= nmax) and ((n % 12 == 1) or (n % 12 == 5)):
+                prime_list[n] = not prime_list[n]
+            n = 3*x**2 + y**2
+            if (n <= nmax) and (n % 12 == 7):
+                prime_list[n] = not prime_list[n]
+            n = 3*x**2 - y**2
+            if (x > y) and (n <= nmax) and (n % 12 == 11):
+                prime_list[n] = not prime_list[n]
+    for n in range(5, int(math.sqrt(nmax))+1):
+        if prime_list[n]:
+            ik = 1
+            while ik * n**2 <= nmax:
+                prime_list[ik * n**2] = False
+                ik += 1
+    prime = []
+    for i in range(nmax + 1):
+        if i in [0, 1, 4]:
+            pass
+        elif i in [2, 3] or prime_list[i]:
+            prime.append(i)
+        else:
+            pass
+    return prime
+
+
 def main(c=10, r=10000):
     print("even list:", even_list(100))
     print("primes list:", primes_list(1000, 2))
     print("\nPrime Number: ")
-    for a in range(4):
-        msg = "do nothing"
+    for a in range(5):
+        msg = ""
         if a == 0:
             msg = "Trial Division"
         elif a == 1:  # method 1: slow
@@ -113,6 +149,8 @@ def main(c=10, r=10000):
         elif a == 3:  # method 3: faster
             msg = "Python filter() and generator() from https://github.com/michaelliao/learn-python3" \
                   "/blob/master/samples/functional/prime_numbers.py"
+        elif a == 4:
+            msg = "Sieve of Atkin from: https://gist.github.com/mineta/7840849"
         len_list = []
         start = timeit.default_timer()
         for b in range(c):
