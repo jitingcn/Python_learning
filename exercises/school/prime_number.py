@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 if not sys.argv[3]:
                     show_list = 0
                 else:
-                    show_list = int(sys.argv[2])
+                    show_list = int(sys.argv[3])
                 main(times, ranges, show_list)
         else:
             main(int(input("Enter test times: ")),
