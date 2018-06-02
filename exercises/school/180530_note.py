@@ -151,12 +151,12 @@ def main(c=10, r=10000):
                   "/blob/master/samples/functional/prime_numbers.py"
         elif a == 4:
             msg = "Sieve of Atkin from: https://gist.github.com/mineta/7840849"
+        print("\nMethod %d: %s" % (a + 1, msg))
         len_list = []
         start = timeit.default_timer()
         for b in range(c):
             len_list = primes_list(r, a)
-        elapsed = (timeit.default_timer() - start) / 100
-        print("\nMethod %d: %s" % (a + 1, msg))
+        elapsed = (timeit.default_timer() - start) / c
         print("length:", len(len_list))
         print(c, "calculations average time: %.6f s" % elapsed)
 
