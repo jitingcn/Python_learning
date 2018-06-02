@@ -35,6 +35,8 @@ def primes_list(n, m):
                 break
     elif m == 4:
         primes_l = sieve_atkin(n)
+    elif m == 5:
+        primes_l = ex_prime(n)
     return primes_l
 
 
@@ -134,11 +136,26 @@ def sieve_atkin(nmax):  # from: https://gist.github.com/mineta/7840849
     return prime
 
 
-def main(c=10, r=10000):
+def ex_prime(n):
+    flag = [1]*(n+2)
+    p = 2
+    r = []
+    while p <= n:
+        r.append(p)
+        for i in range(2*p, n+1, p):
+            flag[i] = 0
+        while 1:
+            p += 1
+            if flag[p] == 1:
+                break
+    return r
+
+
+def main(c=2, r=100000):
     print("even list:", even_list(100))
-    print("primes list:", primes_list(1000, 2))
+    print("primes list:", primes_list(200, 2))
     print("\nPrime Number: ")
-    for a in range(5):
+    for a in range(6):
         msg = ""
         if a == 0:
             msg = "Trial Division"
@@ -151,7 +168,12 @@ def main(c=10, r=10000):
                   "/blob/master/samples/functional/prime_numbers.py"
         elif a == 4:
             msg = "Sieve of Atkin from: https://gist.github.com/mineta/7840849"
-        print("\nMethod %d: %s" % (a + 1, msg))
+        elif a == 5:
+            msg = "Another fastest algorithm"
+        '''if a == 0 or a == 2-1 or a == 4-1:
+            pass
+        else:'''
+        print("Method %d: %s" % (a + 1, msg))
         len_list = []
         start = timeit.default_timer()
         for b in range(c):
@@ -159,6 +181,7 @@ def main(c=10, r=10000):
         elapsed = (timeit.default_timer() - start) / c
         print("length:", len(len_list))
         print(c, "calculations average time: %.6f s" % elapsed)
+        print("Max prime number in %d: %s\n" % (r, len_list[-1]))
 
 
 if __name__ == '__main__':
