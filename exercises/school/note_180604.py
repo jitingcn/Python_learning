@@ -23,7 +23,7 @@ def rwh_primes1v2(n):  # https://stackoverflow.com/a/46635266
 
 
 def get_numbers(filename, nums=None):
-    print("\nLoading data...")
+    print("Loading data...\n")
     if nums is None:
         nums = {}
     with open(filename, 'r') as f:
@@ -31,19 +31,22 @@ def get_numbers(filename, nums=None):
             tmp = line.strip()
             try:
                 tmp = int(tmp)
-                nums[tmp] = False
+                if tmp < 0:
+                    raise ValueError
+                else:
+                    nums[tmp] = False
             except ValueError as e:
-                print(tmp + ": Not a valid input", "\nSkip...")
+                print("\"%s\" is a invalid input, skip the line." % tmp)
             # print(nums)
     # nums = sorted(nums.keys())
     # nums = num_check(nums)
-    print("Input: ", nums)
+    print("\nInput: %s" % nums)
     return nums
 
 
 def check_prime(nums):
     n_max = int(max(nums, key=int))
-    prime_list = rwh_primes1v2(n_max)
+    prime_list = rwh_primes1v2(n_max+1)
     for i in dict.keys(nums):
         if i in prime_list:
             nums[i] = True
@@ -55,13 +58,27 @@ def save_primes(nums):
         f.write(json.dumps(nums))
 
 
+def primes_n(n=10000):
+    try:
+        if type(n) == "int":
+            raise TypeError
+        prime = rwh_primes1v2(n)
+        prime = map(str, prime)
+        with open("prime(%s).txt" % n, 'w', encoding="utf-8") as f:
+            for i in prime:
+                f.write(i + "\n")
+    except TypeError as e:
+        print("TypeError: %s is a invalid input for function primes_n()" % n)
+
+
 def main():
     try:
         filename = input("Enter the file name: ")
         primes = check_prime(get_numbers(filename))
-        print("Output: ", primes)
+        print("\nOutput: ", primes)
         save_primes(primes)
-        print("DONE")
+        print("\nDONE")
+        primes_n()
     except Exception as e:
         print(e)
 
